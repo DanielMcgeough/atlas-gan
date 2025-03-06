@@ -41,7 +41,7 @@ def build_generator():
     model.add(layers.LeakyReLU())
 
     """reshaping organizes data"""
-    model.add(layers.reshape((7, 7, 256)))
+    model.add(layers.Reshape((7, 7, 256)))
 
     # First upsampling block
     model.add(layers.Conv2DTranspose(128, (5, 5), strides=(2, 2), padding='same', use_bias=False))
