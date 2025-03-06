@@ -25,10 +25,10 @@ train_images = (train_images - 127.5) / 127.5
 train_dataset = tf.data.Dataset.from_tensor_slices(train_images)
 train_dataset = train_dataset.shuffle(buffer_size=60000)
 train_datset = train_dataset.batch(batch_size)
-
+print("printstatement1")
 def build_generator():
     model = models.Sequential()
-
+    print("printstatement2")
     """upsampling process The upsampling
     process, in the context of deep
     learning and image processing,
@@ -39,7 +39,7 @@ def build_generator():
     model.add(layers.Dense(7 * 7 * 256, use_bias=False, input_shape=(latent_dim,)))
     model.add(layers.BatchNormalization())
     model.add(layers.LeakyReLU())
-
+    print("printstatement3")
     """reshaping organizes data"""
     model.add(layers.Reshape((7, 7, 256)))
 
@@ -55,23 +55,23 @@ def build_generator():
 
     # Output layer
     model.add(layers.Conv2DTranspose(1, (5, 5), strides=(1, 1), padding='same', use_bias=False, activation='tanh'))
-
+    print("printstatement4")
     return model
 
 def build_discriminator():
     model = models.Sequential()
-
+    print("printstatement5")
     # First layer
     model.add(layers.Conv2D(64, (5, 5), strides=(2, 2), padding='same',
                             input_shape=[28, 28, 1]))
     model.add(layers.LeakyReLU())
     model.add(layers.Dropout(0.3)) # preventing overfitting
-
+    print("printstatement6")
     # Second layer
     model.add(layers.Conv2D(128, (5, 5), strides=(2, 2), padding='same'))
     model.add(layers.LeakyReLU())
     model.add(layers.Dropout(0.3))
-
+    print("printstatement7")
     # Flatten and dense layer for classification
     model.add(layers.Flatten())
     model.add(layers.Dense(1)) # Single output node for binary classification
@@ -80,6 +80,7 @@ def build_discriminator():
 
 
 # optimizers
+print("printstatement8")
 generator_optimizer = optimizers.Adam(learning_rate=0.0002, beta_1=0.5)
 discriminator_optimizer = optimizers.Adam(learning_rate=0.0002, beta_1=0.5)
 
@@ -88,7 +89,7 @@ cross_entropy = tf.keras.losses.BinaryCrossentropy(from_logits=True)
 
 generator = build_generator()
 discriminator = build_discriminator()
-
+print("printstatement9")
 import time
 checkpoint_dir = './training_checkpoints'
 checkpoint_prefix = os.path.join(checkpoint_dir, "ckpt")
@@ -97,9 +98,9 @@ checkpoint = tf.train.Checkpoint(generator_optimizer=generator_optimizer,
                                  generator=generator,
                                  discriminator=discriminator)
 
-
+print("printstatement9.1")
 def train_step(real_images, batch_size=batch_size, latent_dim=latent_dim):
-    
+    print("printstatement10")
     # Random noise for generator input
     noise = tf.random.normal([batch_size, latent_dim])
 
