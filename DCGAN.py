@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-"""Creating a DCGAN"""
 
 import tensorflow as tf
 from tensorflow.keras import layers, models, optimizers
@@ -13,34 +12,27 @@ batch_size = 128
 latent_dim = 100
 epochs = 50
 
-"""Load the MNIST dataset its a large dataset
-of handwritten digits with 60,000 training images"""
+# Load and preprocess the MNIST dataset
 (train_images, _), (_, _) = mnist.load_data()
 
-"""images are 28x28 so need to normalize"""
-train_images = train_images.reshape(train_images.shape[0], 28, 28, 1).astype('float')
+# Reshape and normalize the images
+train_images = train_images.reshape(train_images.shape[0], 28, 28, 1).astype('float32')
 train_images = (train_images - 127.5) / 127.5
 
-"""Create the dataset"""
+# create TensowFlow dataset
 train_dataset = tf.data.Dataset.from_tensor_slices(train_images)
 train_dataset = train_dataset.shuffle(buffer_size=60000)
-train_datset = train_dataset.batch(batch_size)
-print("printstatement1")
+train_dataset = train_dataset.batch(batch_size)
+
 def build_generator():
     model = models.Sequential()
-    print("printstatement2")
-    """upsampling process The upsampling
-    process, in the context of deep
-    learning and image processing,
-    refers to increasing the spatial
-    resolution of an image or feature
-    map. It's essentially the opposite
-    of downsampling, which reduces resolution."""
+
+    #Upsampling process
     model.add(layers.Dense(7 * 7 * 256, use_bias=False, input_shape=(latent_dim,)))
     model.add(layers.BatchNormalization())
     model.add(layers.LeakyReLU())
-    print("printstatement3")
-    """reshaping organizes data"""
+
+    # Reshape into 7x7x256 feature maps
     model.add(layers.Reshape((7, 7, 256)))
 
     # First upsampling block
@@ -55,23 +47,23 @@ def build_generator():
 
     # Output layer
     model.add(layers.Conv2DTranspose(1, (5, 5), strides=(1, 1), padding='same', use_bias=False, activation='tanh'))
-    print("printstatement4")
+
     return model
 
 def build_discriminator():
     model = models.Sequential()
-    print("printstatement5")
+
     # First layer
     model.add(layers.Conv2D(64, (5, 5), strides=(2, 2), padding='same',
                             input_shape=[28, 28, 1]))
     model.add(layers.LeakyReLU())
     model.add(layers.Dropout(0.3)) # preventing overfitting
-    print("printstatement6")
+
     # Second layer
     model.add(layers.Conv2D(128, (5, 5), strides=(2, 2), padding='same'))
     model.add(layers.LeakyReLU())
     model.add(layers.Dropout(0.3))
-    print("printstatement7")
+
     # Flatten and dense layer for classification
     model.add(layers.Flatten())
     model.add(layers.Dense(1)) # Single output node for binary classification
@@ -80,7 +72,6 @@ def build_discriminator():
 
 
 # optimizers
-print("printstatement8")
 generator_optimizer = optimizers.Adam(learning_rate=0.0002, beta_1=0.5)
 discriminator_optimizer = optimizers.Adam(learning_rate=0.0002, beta_1=0.5)
 
@@ -89,7 +80,7 @@ cross_entropy = tf.keras.losses.BinaryCrossentropy(from_logits=True)
 
 generator = build_generator()
 discriminator = build_discriminator()
-print("printstatement9")
+
 import time
 checkpoint_dir = './training_checkpoints'
 checkpoint_prefix = os.path.join(checkpoint_dir, "ckpt")
@@ -98,33 +89,33 @@ checkpoint = tf.train.Checkpoint(generator_optimizer=generator_optimizer,
                                  generator=generator,
                                  discriminator=discriminator)
 
-print("printstatement9.1")
+
 def train_step(real_images, batch_size=batch_size, latent_dim=latent_dim):
-    print("printstatement10")
+    
     # Random noise for generator input
     noise = tf.random.normal([batch_size, latent_dim])
-    print("printstatement111")
+
     with tf.GradientTape() as gen_tape, tf.GradientTape() as disc_tape:
-        print("printstatement11.2")
+
         # Generate fake images
         generated_images = generator(noise, training=True)
-        print("printstatement11.3")
+
         # Discriminator outputs for real and fake images
         real_output = discriminator(real_images, training=True)
         fake_output = discriminator(generated_images, training=True)
-        print("printstatement11.4")
+
         # Losses calculation
         gen_loss = generator_loss(fake_output)
         disc_loss = discriminator_loss(real_output, fake_output)
-        print("printstatement11.5")
+
         # Gradient calculation
         gradients_of_generator = gen_tape.gradient(gen_loss, generator.trainable_variables)
         gradients_of_discriminator = disc_tape.gradient(disc_loss, discriminator.trainable_variables)
-        print("printstatement11.6")
+
         # Application of gradients
         generator_optimizer.apply_gradients(zip(gradients_of_generator, generator.trainable_variables))
         discriminator_optimizer.apply_gradients(zip(gradients_of_discriminator, discriminator.trainable_variables))
-        print("printstatement12")
+
         return gen_loss, disc_loss
 
 def discriminator_loss(real_output, fake_output):
