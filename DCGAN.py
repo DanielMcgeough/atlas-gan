@@ -5,9 +5,9 @@ import tensorflow as tf
 from tensorflow.keras import layers, models, optimizers
 from tensorflow.keras.datasets import mnist
 import numpy as np
+import matplotlib.pyplot as plt
 import wandb
 import os
-import matplotlib.pyplot as plt
 
 batch_size = 128
 latent_dim = 100
