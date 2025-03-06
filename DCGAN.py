@@ -18,7 +18,7 @@ of handwritten digits with 60,000 training images"""
 (train_images, _), (_, _) = mnist.load_data()
 
 """images are 28x28 so need to normalize"""
-train_images = train_images.reshape(train_images.shape[0], 28, 28, 1).astype('float32')
+train_images = train_images.reshape(train_images.shape[0], 28, 28, 1).astype('float2')
 train_images = (train_images - 127.5) / 127.5
 
 """Create the dataset"""
