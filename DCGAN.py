@@ -103,28 +103,28 @@ def train_step(real_images, batch_size=batch_size, latent_dim=latent_dim):
     print("printstatement10")
     # Random noise for generator input
     noise = tf.random.normal([batch_size, latent_dim])
-
+    print("printstatement111")
     with tf.GradientTape() as gen_tape, tf.GradientTape() as disc_tape:
-
+        print("printstatement11.2")
         # Generate fake images
         generated_images = generator(noise, training=True)
-
+        print("printstatement11.3")
         # Discriminator outputs for real and fake images
         real_output = discriminator(real_images, training=True)
         fake_output = discriminator(generated_images, training=True)
-
+        print("printstatement11.4")
         # Losses calculation
         gen_loss = generator_loss(fake_output)
         disc_loss = discriminator_loss(real_output, fake_output)
-
+        print("printstatement11.5")
         # Gradient calculation
         gradients_of_generator = gen_tape.gradient(gen_loss, generator.trainable_variables)
         gradients_of_discriminator = disc_tape.gradient(disc_loss, discriminator.trainable_variables)
-
+        print("printstatement11.6")
         # Application of gradients
         generator_optimizer.apply_gradients(zip(gradients_of_generator, generator.trainable_variables))
         discriminator_optimizer.apply_gradients(zip(gradients_of_discriminator, discriminator.trainable_variables))
-
+        print("printstatement12")
         return gen_loss, disc_loss
 
 def discriminator_loss(real_output, fake_output):
