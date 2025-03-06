@@ -2,7 +2,7 @@
 """Creating a DCGAN"""
 
 import tensorflow as tf
-from tensorflow.keras import layers, models, _optimizers
+from tensorflow.keras import layers, models, optimizers
 from tensorflow.keras.datasets import mnist
 import numpy as np
 import wandb
