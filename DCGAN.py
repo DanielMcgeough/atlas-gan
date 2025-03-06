@@ -155,7 +155,7 @@ def train(dataset, epochs):
 
     batch_size = 128
     latent_dim = 100
-    epochs = 50
+    epochs = 15
 
     # Generating sample images
     seed = tf.random.normal([16, latent_dim])
@@ -190,7 +190,7 @@ def train(dataset, epochs):
         })
 
         # generate and save images
-        if (epoch + 1) % 10 == 0:
+        if (epoch + 1) % 5 == 0:
             generate_and_save_images(generator, epoch + 1, seed)
 
             #log images to wandb
@@ -205,7 +205,7 @@ def train(dataset, epochs):
               f'Disc Loss: {epoch_disc_loss:.4f}, '
               f'Time: {time.time()-start:.2f} sec')
 
-        if (epoch + 1) % 50 == 0:
+        if (epoch + 1) % 5 == 0:
             checkpoint.save(file_prefix=checkpoint_prefix)
 
     generate_and_save_images(generator, epochs, seed)
