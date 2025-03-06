@@ -10,7 +10,7 @@ import os
 
 batch_size = 128
 latent_dim = 100
-epochs = 50
+epochs = 15
 
 # Load and preprocess the MNIST dataset
 (train_images, _), (_, _) = mnist.load_data()
