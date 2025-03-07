@@ -16,7 +16,7 @@ epochs = 15
 (train_images, _), (_, _) = mnist.load_data()
 
 # Reshape and normalize the images
-train_images = train_images.reshape(train_images.shape[0], 28, 28, 1).astype('float16')
+train_images = train_images.reshape(train_images.shape[0], 28, 28, 1).astype('float32')
 train_images = (train_images - 127.5) / 127.5
 
 # create TensowFlow dataset
