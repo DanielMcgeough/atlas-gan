@@ -72,8 +72,8 @@ def build_discriminator():
 
 
 # optimizers
-generator_optimizer = optimizers.RMSprop(learning_rate=0.0005, beta_1=0.5)
-discriminator_optimizer = optimizers.RMSprop(learning_rate=0.0005, beta_1=0.5)
+generator_optimizer = optimizers.RMSprop(learning_rate=0.0002, rho=0.8)
+discriminator_optimizer = optimizers.RMSprop(learning_rate=0.0002, rho=0.8)
 
 # loss function
 cross_entropy = tf.keras.losses.BinaryCrossentropy(from_logits=True)
