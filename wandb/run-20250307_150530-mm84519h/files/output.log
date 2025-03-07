@@ -1,0 +1,15 @@
+Epoch 1, Gen Loss: 0.7961, Disc Loss: 1.2909, Time: 321.36 sec
+Epoch 2, Gen Loss: 0.7599, Disc Loss: 1.3280, Time: 338.29 sec
+Epoch 3, Gen Loss: 0.7569, Disc Loss: 1.3401, Time: 337.62 sec
+Epoch 4, Gen Loss: 0.7673, Disc Loss: 1.3320, Time: 337.14 sec
+Epoch 5, Gen Loss: 0.7742, Disc Loss: 1.3301, Time: 337.98 sec
+Epoch 6, Gen Loss: 0.7772, Disc Loss: 1.3309, Time: 336.06 sec
+Epoch 7, Gen Loss: 0.7789, Disc Loss: 1.3309, Time: 337.12 sec
+Epoch 8, Gen Loss: 0.7782, Disc Loss: 1.3335, Time: 334.39 sec
+Epoch 9, Gen Loss: 0.7757, Disc Loss: 1.3368, Time: 334.93 sec
+Epoch 10, Gen Loss: 0.7758, Disc Loss: 1.3386, Time: 335.54 sec
+Epoch 11, Gen Loss: 0.7757, Disc Loss: 1.3391, Time: 336.57 sec
+Epoch 12, Gen Loss: 0.7736, Disc Loss: 1.3406, Time: 335.69 sec
+Epoch 13, Gen Loss: 0.7724, Disc Loss: 1.3419, Time: 334.47 sec
+Epoch 14, Gen Loss: 0.7728, Disc Loss: 1.3430, Time: 333.06 sec
+Epoch 15, Gen Loss: 0.7731, Disc Loss: 1.3436, Time: 336.08 sec
