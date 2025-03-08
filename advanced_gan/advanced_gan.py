@@ -79,8 +79,8 @@ def build_discriminator(input_shape=(32, 32, 3)):
     outputs = layers.Dense(1)(x)
     return models.Model(inputs, outputs)
 
-generator_optimizer = optimizers.Adam(learning_rate=0.0001, rho=0.8)
-discriminator_optimizer = optimizers.Adam(learning_rate=0.0001, rho=0.8)
+generator_optimizer = optimizers.Adam(learning_rate=0.0001)
+discriminator_optimizer = optimizers.Adam(learning_rate=0.0001)
 
 cross_entropy = tf.keras.losses.BinaryCrossentropy(from_logits=True)
 
