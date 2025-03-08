@@ -144,6 +144,14 @@ def generate_and_save_images(model, epoch, test_input):
     plt.savefig('image_at_epoch_{:04d}.png'.format(epoch))
     plt.close()
 
+wandb.init(project="cifar10-gan", config={
+    "learning_rate": 0.0005,
+    "batch_size": batch_size,
+    "epochs": epochs,
+    "latent_dim": latent_dim,
+    "dataset": "cifar10"
+})
+
 
 def train(dataset, epochs):
     batch_size = 128
@@ -204,11 +212,3 @@ def train(dataset, epochs):
     generate_and_save_images(generator, epochs, seed)
 
 train(ds_train, epochs)
-
-wandb.init(project="cifar10-gan", config={
-    "learning_rate": 0.0005,
-    "batch_size": batch_size,
-    "epochs": epochs,
-    "latent_dim": latent_dim,
-    "dataset": "cifar10"
-})
