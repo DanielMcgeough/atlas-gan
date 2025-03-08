@@ -69,6 +69,19 @@ def build_discriminator(input_shape=(32, 32, 3)):
 generator_optimizer = optimizers.RMSprop(learning_rate=0.0005, rho=0.8)
 discriminator_optimizer = optimizers.RMSprop(learning_rate=0.0005, rho=0.8)
 
+cross_entropy = tf.keras.losses.BinaryCrossentropy(from_logits=True)
+
+generator = build_generator()
+discriminator = build_discriminator()
+
+import time
+checkpoint_dir = './training_checkpoints'
+checkpoint_prefix = os.path.join(checkpoint_dir, "ckpt")
+checkpoint = tf.train.Checkpoint(generator_optimizer=generator_optimizer,
+                                 discriminator_optimizer=discriminator_optimizer,
+                                 generator=generator,
+                                 discriminator=discriminator)
+
 def train_step(images, generator, discriminator, latent_dim):
     noise = tf.random.normal([images.shape[0], latent_dim])
 
@@ -93,16 +106,32 @@ def train_step(images, generator, discriminator, latent_dim):
 
     return gen_loss, disc_loss
 
-generator = build_generator()
-discriminator = build_discriminator()
+def discriminator_loss(real_output, fake_output, real_images, discriminator):
+    real_loss = tf.reduce_mean(real_output)
+    fake_loss = tf.reduce_mean(fake_output)
+    gradient_penalty = gradient_penalty_loss(real_images, generated_images, discriminator)
+    return fake_loss - real_loss + 10 * gradient_penalty
 
-import time
-checkpoint_dir = './training_checkpoints'
-checkpoint_prefix = os.path.join(checkpoint_dir, "ckpt")
-checkpoint = tf.train.Checkpoint(generator_optimizer=generator_optimizer,
-                                 discriminator_optimizer=discriminator_optimizer,
-                                 generator=generator,
-                                 discriminator=discriminator)
+def generator_loss(fake_output):
+    return -tf.reduce_mean(fake_output)
+
+def generate_and_save_images(model, epoch, test_input):
+
+    # generate images
+    predictions = model(test_input, training=False)
+
+    # Create a figure to contain plot
+    fig = plt.figure(figsize=(4, 4))
+
+    for i in range(predictions.shape[0]):
+        plt.subplot(4, 4, i+1)
+        plt.imshow(predictions[i] * 0.5 + 0.5)
+        plt.axis('off')
+
+    # Save figure
+    plt.savefig('image_at_epoch_{:04d}.png'.format(epoch))
+    plt.close()
+
 
 def train(dataset, epochs):
 
@@ -163,34 +192,7 @@ def train(dataset, epochs):
 
     generate_and_save_images(generator, epochs, seed)
 
-def generate_and_save_images(model, epoch, test_input):
-
-    # generate images
-    predictions = model(test_input, training=False)
-
-    # Create a figure to contain plot
-    fig = plt.figure(figsize=(4, 4))
-
-    for i in range(predictions.shape[0]):
-        plt.subplot(4, 4, i+1)
-        plt.imshow(predictions[i] * 0.5 + 0.5)
-        plt.axis('off')
-
-    # Save figure
-    plt.savefig('image_at_epoch_{:04d}.png'.format(epoch))
-    plt.close()
-
-
-cross_entropy = tf.keras.losses.BinaryCrossentropy(from_logits=True)
-
-def generator_loss(fake_output):
-    return -tf.reduce_mean(fake_output)
-
-def discriminator_loss(real_output, fake_output, real_images, discriminator):
-    real_loss = tf.reduce_mean(real_output)
-    fake_loss = tf.reduce_mean(fake_output)
-    gradient_penalty = gradient_penalty_loss(real_images, generated_images, discriminator)
-    return fake_loss - real_loss + 10 * gradient_penalty
+train(ds_train, epochs)
 
 def gradient_penalty_loss(real_images, fake_images, discriminator):
     alpha = tf.random.uniform([real_images.shape[0], 1, 1, 1], 0.0, 1.0)
