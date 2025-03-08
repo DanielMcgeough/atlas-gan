@@ -91,6 +91,9 @@ def train_step(images, generator, discriminator, latent_dim):
 
     return gen_loss, disc_loss
 
+generator = build_generator()
+discriminator = build_discriminator()
+
 import time
 checkpoint_dir = './training_checkpoints'
 checkpoint_prefix = os.path.join(checkpoint_dir, "ckpt")
