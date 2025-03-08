@@ -73,7 +73,7 @@ def train_step(images, generator, discriminator, latent_dim):
     noise = tf.random.normal([images.shape[0], latent_dim])
 
     with tf.GradientTape() as gen_tape, tf.GradientTape() as disc_tape:
-        generated_images = generator([noise, tf.random.normal([images.shape[0], 4, 4, 512])], training=True)
+        generated_images = generator(noise, training=True)
 
         real_output = discriminator(images, training=True)
         fake_output = discriminator(generated_images, training=True)
@@ -173,7 +173,7 @@ def generate_and_save_images(model, epoch, test_input):
 
     for i in range(predictions.shape[0]):
         plt.subplot(4, 4, i+1)
-        plt.imshow(predictions[i, :, :, 0] * 0.5 + 0.5, cmap='gray')
+        plt.imshow(predictions[i] * 0.5 + 0.5)
         plt.axis('off')
 
     # Save figure
