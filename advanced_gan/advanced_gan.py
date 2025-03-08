@@ -10,7 +10,7 @@ import os
 
 batch_size = 128
 latent_dim = 100
-epochs = 30
+epochs = 15
 
 (ds_train, ds_test), ds_info = tfds.load(
     'cifar10',
@@ -170,7 +170,7 @@ wandb.init(project="cifar10-gan", config={
 def train(dataset, epochs):
     batch_size = 128
     latent_dim = 100
-    epochs = 30
+    epochs = 15
 
     # Generating sample images
     seed = tf.random.normal([16, latent_dim])
