@@ -49,8 +49,6 @@ def build_generator(latent_dim=100, style_dim=512):
     x = layers.LeakyReLU(0.2)(x)
     x = layers.Conv2DTranspose(64, 4, strides=2, padding='same')(x)
     x = layers.LeakyReLU(0.2)(x)
-    x = layers.Conv2DTranspose(32, 4, strides=2, padding='same')(x)
-    x = layers.LeakyReLU(0.2)(x)
     x = layers.Conv2D(3, 3, padding='same', activation='tanh')(x)
     return tf.keras.Model(mapping_inputs, x)
     
