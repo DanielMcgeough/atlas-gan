@@ -104,6 +104,18 @@ def train_step(images, generator, discriminator, latent_dim):
 
     return gen_loss, disc_loss
 
+def gradient_penalty_loss(real_images, fake_images, discriminator):
+    alpha = tf.random.uniform([real_images.shape[0], 1, 1, 1], 0.0, 1.0)
+    interpolated_images = alpha * real_images + (1 - alpha) * fake_images
+    with tf.GradientTape() as tape:
+        tape.watch(interpolated_images)
+        interpolated_output = discriminator(interpolated_images, training=True)
+    gradients = tape.gradient(interpolated_output, interpolated_images)
+    gradients_sqr = tf.square(gradients)
+    gradients_sqr_sum = tf.reduce_sum(gradients_sqr, axis=np.arange(1, len(gradients_sqr.shape)))
+    gradient_penalty = tf.reduce_mean(tf.square(tf.sqrt(gradients_sqr_sum + 1e-12) - 1.0))
+    return gradient_penalty
+
 def discriminator_loss(real_output, fake_output, real_images, discriminator):
     real_loss = tf.reduce_mean(real_output)
     fake_loss = tf.reduce_mean(fake_output)
@@ -190,18 +202,6 @@ def train(dataset, epochs):
     generate_and_save_images(generator, epochs, seed)
 
 train(ds_train, epochs)
-
-def gradient_penalty_loss(real_images, fake_images, discriminator):
-    alpha = tf.random.uniform([real_images.shape[0], 1, 1, 1], 0.0, 1.0)
-    interpolated_images = alpha * real_images + (1 - alpha) * fake_images
-    with tf.GradientTape() as tape:
-        tape.watch(interpolated_images)
-        interpolated_output = discriminator(interpolated_images, training=True)
-    gradients = tape.gradient(interpolated_output, interpolated_images)
-    gradients_sqr = tf.square(gradients)
-    gradients_sqr_sum = tf.reduce_sum(gradients_sqr, axis=np.arange(1, len(gradients_sqr.shape)))
-    gradient_penalty = tf.reduce_mean(tf.square(tf.sqrt(gradients_sqr_sum + 1e-12) - 1.0))
-    return gradient_penalty
 
 wandb.init(project="cifar10-gan", config={
     "learning_rate": 0.0005,
