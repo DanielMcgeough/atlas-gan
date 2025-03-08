@@ -28,29 +28,44 @@ def preprocess(example):
 ds_train = ds_train.map(preprocess).cache().batch(32).prefetch(tf.data.AUTOTUNE)
 ds_test = ds_test.map(preprocess).cache().batch(32).prefetch(tf.data.AUTOTUNE)
 
-def build_generator(latent_dim=100, style_dim=256):
-    # Mapping Network - Simplified
-    mapping_inputs = layers.Input(shape=(latent_dim,))
-    x = layers.Dense(style_dim)(mapping_inputs)
-    x = layers.LeakyReLU(0.2)(x)
-    x = layers.Dense(style_dim)(x)
-    x = layers.LeakyReLU(0.2)(x)
-    style_codes = layers.Dense(style_dim)(x)
+# def build_generator(latent_dim=100, style_dim=256):
+#     # Mapping Network - Simplified
+#     mapping_inputs = layers.Input(shape=(latent_dim,))
+#     x = layers.Dense(style_dim)(mapping_inputs)
+#     x = layers.LeakyReLU(0.2)(x)
+#     x = layers.Dense(style_dim)(x)
+#     x = layers.LeakyReLU(0.2)(x)
+#     style_codes = layers.Dense(style_dim)(x)
 
+#     # Synthesis Network - Simplified
+#     style_reshape = layers.Dense(4 * 4 * 256)(style_codes)
+#     style_reshape = layers.Reshape((4, 4, 256))(style_reshape)
+
+#     x = layers.Conv2DTranspose(128, 4, strides=2, padding='same')(style_reshape)
+#     x = layers.LeakyReLU(0.2)(x)
+#     x = layers.Conv2DTranspose(64, 4, strides=2, padding='same')(x)
+#     x = layers.LeakyReLU(0.2)(x)
+#     #add this layer to upscale to 32x32
+#     x = layers.Conv2DTranspose(32, 4, strides=2, padding='same')(x)
+#     x = layers.LeakyReLU(0.2)(x)
+#     x = layers.Conv2D(3, 3, padding='same', activation='tanh')(x)
+#     return tf.keras.Model(mapping_inputs, x)
+
+def build_generator(latent_dim=100): #removed style_dim
     # Synthesis Network - Simplified
-    style_reshape = layers.Dense(4 * 4 * 256)(style_codes)
+    inputs = layers.Input(shape=(latent_dim,))
+    style_reshape = layers.Dense(4 * 4 * 256)(inputs)
     style_reshape = layers.Reshape((4, 4, 256))(style_reshape)
 
     x = layers.Conv2DTranspose(128, 4, strides=2, padding='same')(style_reshape)
     x = layers.LeakyReLU(0.2)(x)
     x = layers.Conv2DTranspose(64, 4, strides=2, padding='same')(x)
     x = layers.LeakyReLU(0.2)(x)
-    #add this layer to upscale to 32x32
     x = layers.Conv2DTranspose(32, 4, strides=2, padding='same')(x)
     x = layers.LeakyReLU(0.2)(x)
     x = layers.Conv2D(3, 3, padding='same', activation='tanh')(x)
-    return tf.keras.Model(mapping_inputs, x)
-    
+    return tf.keras.Model(inputs, x)
+
 def build_discriminator(input_shape=(32, 32, 3)):
     inputs = layers.Input(shape=input_shape)
     x = layers.Conv2D(32, kernel_size=3, strides=2, padding='same', kernel_regularizer=tf.keras.regularizers.l2(0.001))(inputs) #reduced filters
