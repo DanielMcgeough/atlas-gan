@@ -134,10 +134,9 @@ def generate_and_save_images(model, epoch, test_input):
 
 
 def train(dataset, epochs):
-
     batch_size = 128
     latent_dim = 100
-    epochs = 15
+    epochs = 30
 
     # Generating sample images
     seed = tf.random.normal([16, latent_dim])
@@ -152,7 +151,7 @@ def train(dataset, epochs):
 
         for image_batch in dataset:
             # Train
-            gen_loss, disc_loss = train_step(image_batch)
+            gen_loss, disc_loss = train_step(image_batch, generator, discriminator, latent_dim) #Corrected here
 
             # track losses
             epoch_gen_loss += gen_loss
@@ -162,7 +161,7 @@ def train(dataset, epochs):
         # Average loss for this epoch calculation
         epoch_gen_loss /= num_batches
         epoch_disc_loss /= num_batches
-        
+
         # Log to wanb
         wandb.log({
             'epoch': epoch,
@@ -175,17 +174,17 @@ def train(dataset, epochs):
         if (epoch + 1) % 5 == 0:
             generate_and_save_images(generator, epoch + 1, seed)
 
-            #log images to wandb
+            # log images to wandb
             images = generator(seed, training=False)
-            images = images * 0.5 + 0.5 # scale from [-1, 1] to [0, 1]
+            images = images * 0.5 + 0.5  # scale from [-1, 1] to [0, 1]
             wandb.log({
                 "generated_images": [wandb.Image(img) for img in images]
             })
 
-        #print progress
-        print(f'Epoch {epoch+1}, Gen Loss: {epoch_gen_loss:.4f}, '
+        # print progress
+        print(f'Epoch {epoch + 1}, Gen Loss: {epoch_gen_loss:.4f}, '
               f'Disc Loss: {epoch_disc_loss:.4f}, '
-              f'Time: {time.time()-start:.2f} sec')
+              f'Time: {time.time() - start:.2f} sec')
 
         if (epoch + 1) % 5 == 0:
             checkpoint.save(file_prefix=checkpoint_prefix)
