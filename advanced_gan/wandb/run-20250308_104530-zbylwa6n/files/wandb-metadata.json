@@ -1,0 +1,31 @@
+{
+  "os": "Linux-5.15.153.1-microsoft-standard-WSL2-x86_64-with-glibc2.35",
+  "python": "CPython 3.10.12",
+  "startedAt": "2025-03-08T16:45:30.166446Z",
+  "program": "/home/danny_mcgeough/atlas-gan/advanced_gan/./advanced_gan.py",
+  "codePath": "advanced_gan/advanced_gan.py",
+  "git": {
+    "remote": "https://github.com/DanielMcgeough/atlas-gan.git",
+    "commit": "8ad9612409ccb6a3510754b583c34ab7a44e09f7"
+  },
+  "email": "daniel.mcgeough@atlasschool.com",
+  "root": "/home/danny_mcgeough/atlas-gan/advanced_gan",
+  "host": "LAPTOP-EFHTVQTD",
+  "executable": "/usr/bin/python3",
+  "codePathLocal": "advanced_gan.py",
+  "cpu_count": 4,
+  "cpu_count_logical": 8,
+  "disk": {
+    "/": {
+      "total": "1081101176832",
+      "used": "11720323072"
+    }
+  },
+  "memory": {
+    "total": "8208289792"
+  },
+  "cpu": {
+    "count": 4,
+    "countLogical": 8
+  }
+}
