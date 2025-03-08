@@ -44,8 +44,3 @@ Image manipulation (e.g., image-to-image translation).
 Generating art.
 Data augmentation.
 In essence, DCGANs are a powerful tool for generating realistic images by combining the strengths of GANs and CNNs.
-
-   
-
-
-Sources and related content
