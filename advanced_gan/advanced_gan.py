@@ -30,7 +30,7 @@ ds_train = ds_train.map(preprocess).cache().batch(32).prefetch(tf.data.AUTOTUNE)
 ds_test = ds_test.map(preprocess).cache().batch(32).prefetch(tf.data.AUTOTUNE)
 
 def build_generator(latent_dim=100, style_dim=512):
-    # Mapping Network (same as before)
+    # Mapping Network
     mapping_inputs = layers.Input(shape=(latent_dim,))
     x = layers.Dense(style_dim)(mapping_inputs)
     x = layers.LeakyReLU(0.2)(x)
@@ -39,15 +39,18 @@ def build_generator(latent_dim=100, style_dim=512):
         x = layers.LeakyReLU(0.2)(x)
     style_codes = layers.Dense(style_dim)(x)
 
-    # Synthesis Network (Modified)
-    inputs = layers.Input(shape=(4, 4, 512))
-    x = layers.Conv2DTranspose(256, 4, strides=2, padding='same')(inputs)
+    # Synthesis Network
+    # Add a Dense layer that reshapes the style code
+    style_reshape = layers.Dense(4 * 4 * 512)(style_codes)
+    style_reshape = layers.Reshape((4, 4, 512))(style_reshape)
+
+    x = layers.Conv2DTranspose(256, 4, strides=2, padding='same')(style_reshape)
     x = layers.LeakyReLU(0.2)(x)
     x = layers.Conv2DTranspose(128, 4, strides=2, padding='same')(x)
     x = layers.LeakyReLU(0.2)(x)
     x = layers.Conv2DTranspose(64, 4, strides=2, padding='same')(x)
     x = layers.LeakyReLU(0.2)(x)
-    x = layers.Conv2DTranspose(32, 4, strides=2, padding='same')(x) #added layer
+    x = layers.Conv2DTranspose(32, 4, strides=2, padding='same')(x)
     x = layers.LeakyReLU(0.2)(x)
     x = layers.Conv2D(3, 3, padding='same', activation='tanh')(x)
     return tf.keras.Model(mapping_inputs, x)
