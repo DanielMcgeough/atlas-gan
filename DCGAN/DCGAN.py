@@ -151,6 +151,7 @@ def generate_and_save_images(model, epoch, test_input):
     plt.savefig('image_at_epoch_{:04d}.png'.format(epoch))
     plt.close()
 
+
 def train(dataset, epochs):
 
     batch_size = 128
