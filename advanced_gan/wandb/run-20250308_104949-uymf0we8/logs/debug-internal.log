@@ -1,0 +1,15 @@
+{"time":"2025-03-08T10:49:49.408455213-06:00","level":"INFO","msg":"stream: starting","core version":"0.19.8","symlink path":"/home/danny_mcgeough/atlas-gan/advanced_gan/wandb/run-20250308_104949-uymf0we8/logs/debug-core.log"}
+{"time":"2025-03-08T10:49:49.522479119-06:00","level":"INFO","msg":"created new stream","id":"uymf0we8"}
+{"time":"2025-03-08T10:49:49.522513759-06:00","level":"INFO","msg":"stream: started","id":"uymf0we8"}
+{"time":"2025-03-08T10:49:49.522562485-06:00","level":"INFO","msg":"writer: Do: started","stream_id":"uymf0we8"}
+{"time":"2025-03-08T10:49:49.522586113-06:00","level":"INFO","msg":"handler: started","stream_id":"uymf0we8"}
+{"time":"2025-03-08T10:49:49.522611147-06:00","level":"INFO","msg":"sender: started","stream_id":"uymf0we8"}
+{"time":"2025-03-08T10:49:49.761273087-06:00","level":"INFO","msg":"Starting system monitor"}
+{"time":"2025-03-08T10:49:49.876105941-06:00","level":"INFO","msg":"stream: closing","id":"uymf0we8"}
+{"time":"2025-03-08T10:49:49.876136097-06:00","level":"INFO","msg":"Stopping system monitor"}
+{"time":"2025-03-08T10:49:49.876796493-06:00","level":"INFO","msg":"Stopped system monitor"}
+{"time":"2025-03-08T10:49:50.408794184-06:00","level":"INFO","msg":"fileTransfer: Close: file transfer manager closed"}
+{"time":"2025-03-08T10:49:50.567252912-06:00","level":"INFO","msg":"handler: closed","stream_id":"uymf0we8"}
+{"time":"2025-03-08T10:49:50.567290755-06:00","level":"INFO","msg":"writer: Close: closed","stream_id":"uymf0we8"}
+{"time":"2025-03-08T10:49:50.56734485-06:00","level":"INFO","msg":"sender: closed","stream_id":"uymf0we8"}
+{"time":"2025-03-08T10:49:50.56734983-06:00","level":"INFO","msg":"stream: closed","id":"uymf0we8"}
