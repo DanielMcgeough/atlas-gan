@@ -119,6 +119,8 @@ def gradient_penalty_loss(real_images, fake_images, discriminator):
 def discriminator_loss(real_output, fake_output, real_images, discriminator):
     real_loss = tf.reduce_mean(real_output)
     fake_loss = tf.reduce_mean(fake_output)
+    noise = tf.random.normal([real_images.shape[0], latent_dim]) #create noise.
+    generated_images = generator(noise, training=False) #create fake images.
     gradient_penalty = gradient_penalty_loss(real_images, generated_images, discriminator)
     return fake_loss - real_loss + 10 * gradient_penalty
 
