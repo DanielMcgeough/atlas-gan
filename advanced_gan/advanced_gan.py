@@ -104,36 +104,81 @@ checkpoint = tf.train.Checkpoint(generator_optimizer=generator_optimizer,
                                  generator=generator,
                                  discriminator=discriminator)
 
-def train(dataset, generator, discriminator, latent_dim, epochs, batch_size):
+def train(dataset, epochs):
+
+    batch_size = 128
+    latent_dim = 100
+    epochs = 15
+
+    # Generating sample images
+    seed = tf.random.normal([16, latent_dim])
+
     for epoch in range(epochs):
+        start = time.time()
+
+        # Initialize metrics for this epoch
+        epoch_gen_loss = 0
+        epoch_disc_loss = 0
+        num_batches = 0
+
         for image_batch in dataset:
-            gen_loss, disc_loss = train_step(image_batch, generator, discriminator, latent_dim)
+            # Train
+            gen_loss, disc_loss = train_step(image_batch)
 
-            # Log losses with wandb
-            wandb.log({"gen_loss": gen_loss.numpy(), "disc_loss": disc_loss.numpy()})
+            # track losses
+            epoch_gen_loss += gen_loss
+            epoch_disc_loss += disc_loss
+            num_batches += 1
 
-        # Generate sample images (e.g., every few epochs)
+        # Average loss for this epoch calculation
+        epoch_gen_loss /= num_batches
+        epoch_disc_loss /= num_batches
+        
+        # Log to wanb
+        wandb.log({
+            'epoch': epoch,
+            'generator_loss': epoch_gen_loss,
+            'discriminator_loss': epoch_disc_loss,
+            'time_per_epoch': time.time() - start
+        })
+
+        # generate and save images
         if (epoch + 1) % 5 == 0:
-            generate_and_save_images(generator, epoch + 1, latent_dim)
+            generate_and_save_images(generator, epoch + 1, seed)
 
-        print(f"Epoch {epoch + 1}, Gen Loss: {gen_loss.numpy()}, Disc Loss: {disc_loss.numpy()}")
+            #log images to wandb
+            images = generator(seed, training=False)
+            images = images * 0.5 + 0.5 # scale from [-1, 1] to [0, 1]
+            wandb.log({
+                "generated_images": [wandb.Image(img) for img in images]
+            })
 
-def generate_and_save_images(model, epoch, latent_dim):
-    noise = tf.random.normal([16, latent_dim])
-    generated_images = model([noise, tf.random.normal([16, 4, 4, 512])], training=False)
-    generated_images = (generated_images * 0.5 + 0.5).numpy() # rescale to [0,1]
+        #print progress
+        print(f'Epoch {epoch+1}, Gen Loss: {epoch_gen_loss:.4f}, '
+              f'Disc Loss: {epoch_disc_loss:.4f}, '
+              f'Time: {time.time()-start:.2f} sec')
 
+        if (epoch + 1) % 5 == 0:
+            checkpoint.save(file_prefix=checkpoint_prefix)
+
+    generate_and_save_images(generator, epochs, seed)
+
+def generate_and_save_images(model, epoch, test_input):
+
+    # generate images
+    predictions = model(test_input, training=False)
+
+    # Create a figure to contain plot
     fig = plt.figure(figsize=(4, 4))
-    for i in range(16):
-        plt.subplot(4, 4, i + 1)
-        plt.imshow(generated_images[i])
+
+    for i in range(predictions.shape[0]):
+        plt.subplot(4, 4, i+1)
+        plt.imshow(predictions[i, :, :, 0] * 0.5 + 0.5, cmap='gray')
         plt.axis('off')
 
+    # Save figure
     plt.savefig('image_at_epoch_{:04d}.png'.format(epoch))
     plt.close()
-
-    # Log to wandb
-    wandb.log({"generated_images": wandb.Image(generated_images)})
 
 
 cross_entropy = tf.keras.losses.BinaryCrossentropy(from_logits=True)
