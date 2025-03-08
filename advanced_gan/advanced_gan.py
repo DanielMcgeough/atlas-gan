@@ -14,23 +14,17 @@ latent_dim = 100
 epochs = 30
 
 (ds_train, ds_test), ds_info = tfds.load(
-        'celeb_a_hq',
-        split=['train', 'test'],
-        shuffle_files=True,
-        as_supervised=False,
-        with_info=True,
+    'cifar10',
+    split=['train', 'test'],
+    shuffle_files=True,
+    as_supervised=False,
+    with_info=True,
 )
-IMG_SIZE = 128
-
-def resize_and_center_crop(image):
-        image = tf.image.resize(image, [IMG_SIZE * 2, IMG_SIZE * 2], method=tf.image.ResizeMethod.BICUBIC)
-        image = tf.image.central_crop(image, 0.5)
-        return image
+IMG_SIZE = 32
 
 def preprocess(example):
     image = (tf.cast(example['image'], tf.float32) / 127.5) - 1.0
-    image = resize_and_center_crop(image)
-    return image # return only the high resolution image.
+    return image
 
 ds_train = ds_train.map(preprocess).cache().batch(32).prefetch(tf.data.AUTOTUNE)
 ds_test = ds_test.map(preprocess).cache().batch(32).prefetch(tf.data.AUTOTUNE)
@@ -58,7 +52,7 @@ def build_generator(latent_dim=100, style_dim=512):
     x = layers.Conv2D(3, 3, padding='same', activation='tanh')(x)
     return tf.keras.Model(mapping_inputs, x)
     
-def build_discriminator(input_shape=(128, 128, 3)):
+def build_discriminator(input_shape=(32, 32, 3)):
     inputs = layers.Input(shape=input_shape)
     x = layers.Conv2D(64, kernel_size=3, strides=2, padding='same', kernel_regularizer=tf.keras.regularizers.l2(0.001))(inputs)
     x = layers.BatchNormalization()(x) # batch normalization added here
@@ -160,9 +154,10 @@ def gradient_penalty_loss(real_images, fake_images, discriminator):
     gradient_penalty = tf.reduce_mean(tf.square(tf.sqrt(gradients_sqr_sum + 1e-12) - 1.0))
     return gradient_penalty
 
-wandb.init(project="celeba-hq-gan", config={
+wandb.init(project="cifar10-gan", config={
     "learning_rate": 0.0005,
     "batch_size": batch_size,
     "epochs": epochs,
-    "latent_dim": latent_dim
+    "latent_dim": latent_dim,
+    "dataset": "cifar10"
 })
