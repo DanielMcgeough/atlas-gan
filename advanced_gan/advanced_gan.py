@@ -28,29 +28,6 @@ def preprocess(example):
 ds_train = ds_train.map(preprocess).cache().batch(32).prefetch(tf.data.AUTOTUNE)
 ds_test = ds_test.map(preprocess).cache().batch(32).prefetch(tf.data.AUTOTUNE)
 
-# def build_generator(latent_dim=100, style_dim=256):
-#     # Mapping Network - Simplified
-#     mapping_inputs = layers.Input(shape=(latent_dim,))
-#     x = layers.Dense(style_dim)(mapping_inputs)
-#     x = layers.LeakyReLU(0.2)(x)
-#     x = layers.Dense(style_dim)(x)
-#     x = layers.LeakyReLU(0.2)(x)
-#     style_codes = layers.Dense(style_dim)(x)
-
-#     # Synthesis Network - Simplified
-#     style_reshape = layers.Dense(4 * 4 * 256)(style_codes)
-#     style_reshape = layers.Reshape((4, 4, 256))(style_reshape)
-
-#     x = layers.Conv2DTranspose(128, 4, strides=2, padding='same')(style_reshape)
-#     x = layers.LeakyReLU(0.2)(x)
-#     x = layers.Conv2DTranspose(64, 4, strides=2, padding='same')(x)
-#     x = layers.LeakyReLU(0.2)(x)
-#     #add this layer to upscale to 32x32
-#     x = layers.Conv2DTranspose(32, 4, strides=2, padding='same')(x)
-#     x = layers.LeakyReLU(0.2)(x)
-#     x = layers.Conv2D(3, 3, padding='same', activation='tanh')(x)
-#     return tf.keras.Model(mapping_inputs, x)
-
 def build_generator(latent_dim=100): #removed style_dim
     # Synthesis Network - Simplified
     inputs = layers.Input(shape=(latent_dim,))
@@ -78,8 +55,8 @@ def build_discriminator(input_shape=(32, 32, 3)):
     outputs = layers.Dense(1)(x)
     return models.Model(inputs, outputs)
 
-generator_optimizer = optimizers.RMSprop(learning_rate=0.0001, rho=0.8)
-discriminator_optimizer = optimizers.RMSprop(learning_rate=0.0001, rho=0.8)
+generator_optimizer = optimizers.RMSprop(learning_rate=0.0005, rho=0.8)
+discriminator_optimizer = optimizers.RMSprop(learning_rate=0.0005, rho=0.8)
 
 cross_entropy = tf.keras.losses.BinaryCrossentropy(from_logits=True)
 
