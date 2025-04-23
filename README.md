@@ -146,7 +146,7 @@ This project currently performs as it should, one way to improve the Advanced GA
 to further fine tune the parameters in order to imrpoved the way it performs.
 
 ## Challenges - In Brief
-New Network Type
-More complexities within dataset
-Construction that differs from previous networks built
-More Hyperparameters that require tweaking
+* New Network Type
+* More complexities within dataset
+* Construction that differs from previous networks built
+* More Hyperparameters that require tweaking
