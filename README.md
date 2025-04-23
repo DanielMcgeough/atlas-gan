@@ -130,6 +130,13 @@ GANs and an Advanced GAN. The first project was fairly quick to complete, but it
 GAN project. The Cohort had some resources with understanding what a GAN was and the research was not too complex. GAN's are quite useful and are 
 becoming more widespread as time goes by because of how useful they are. As a result, the documentation and papers we had access too as part of the
 project as well as further research was a sufficiently large body of work to attain a good understanding of what we had to accomplish. It was then
-that the magnitude of what we were creating sunk in. The cohort struggled to build the GAN.
-## Future Improvements.
-## Challenges
+that the magnitude of what we were creating sunk in. The cohort struggled to build the GAN. With previous GANs and a generous extension of three extra
+days from the instructor, the pressure lessened and with the help of peers the work was completed and tested. The testing needed to attain a certain
+threshold to make sure that the GAN was actually working. This involved running the code and logging the results of the the Generator and the Discriminator
+to make sure that the GAN continued to improve alongside the Discriminator until they were both approaching the probability of creating fake images
+that could "fool" the Discriminator. Initially this was nearly impossible because of the hyper parameters we had on the first iteration. Fine tuning
+of hyper parameters usually represents the difference between a successful application and one that fails to create in this case, believable fake images
+that can bypass the scrutiny of the Discriminator. After fine tuning, tweaking the learning rate, the number of epochs and various other hyper parameters,
+the discrimiantor was consistently failing to detect fakes.
+The Advanced GAN was very similar just with a few extra hidden layers and with a collection of images that was more high quality so it required both
+down and up scaling in order to pass them through to the discriminator.
