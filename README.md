@@ -1,3 +1,5 @@
+![image](https://github.com/user-attachments/assets/a9a28283-b021-4bf5-8b5c-3fd62753e411)
+
 # atlas-gan
 A Deep Convolutional Generative Adversarial Network (DCGAN) is a type of Generative Adversarial Network (GAN) specifically designed for generating images, leveraging deep convolutional neural networks. Here's a breakdown:   
 
@@ -103,3 +105,31 @@ Increased Diversity: Mitigating mode collapse and generating a wider range of im
 Efficiency: Making GANs more efficient and accessible for various applications.   
 3D GANs: Generating 3 dimensional objects.
 Advanced GANs are constantly evolving, with new techniques and architectures being developed to address the challenges of generative modeling.   
+
+## Environment
+This project is interpreted/tested on Ubuntu 14.04 LTS using python3 (version 3.4.3)
+
+## Bugs
+No known bugs at this time. 
+
+## Author
+Danny McGeough is set to graduate from the Atlas Schools Machine Learning program in
+September of 2025. He is interested in becoming fully immersed in the machine learning
+job market and is excited to see what will come next in this growing and fascinating
+field. He is passionate about AI and in this project showcased his ability to construct a complex
+GAN and an advanced GAN from the ground up. Danny although stymied by early efforts and the complexity
+of such an advanced project was able to persevere over the obstacles that included lack of time
+as well as the fact that none of the students in the cohort had seen or operated a GAN before. You can
+contact Danny using any of the links below.
+
+Danny McGeough - [Github](https://github.com/DanielMcgeough) / [Email](danny.mcgeough@gmail.com)
+
+## Development
+The Development of this project was quite challenging. The cohort was only given two weeks to research and complete two projects with one of them being
+GANs and an Advanced GAN. The first project was fairly quick to complete, but it was akin to running face first into a brick wall when it came to the
+GAN project. The Cohort had some resources with understanding what a GAN was and the research was not too complex. GAN's are quite useful and are 
+becoming more widespread as time goes by because of how useful they are. As a result, the documentation and papers we had access too as part of the
+project as well as further research was a sufficiently large body of work to attain a good understanding of what we had to accomplish. It was then
+that the magnitude of what we were creating sunk in. The cohort struggled to build the GAN.
+## Future Improvements.
+## Challenges
