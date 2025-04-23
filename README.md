@@ -140,3 +140,13 @@ that can bypass the scrutiny of the Discriminator. After fine tuning, tweaking t
 the discrimiantor was consistently failing to detect fakes.
 The Advanced GAN was very similar just with a few extra hidden layers and with a collection of images that was more high quality so it required both
 down and up scaling in order to pass them through to the discriminator.
+
+## Further Improvements
+This project currently performs as it should, one way to improve the Advanced GAN would be to feed it a more high quality image collection and then
+to further fine tune the parameters in order to imrpoved the way it performs.
+
+## Challenges - In Brief
+New Network Type
+More complexities within dataset
+Construction that differs from previous networks built
+More Hyperparameters that require tweaking
